@@ -71,7 +71,16 @@
 <div class="login-box">
   <h2>Login</h2>
   <input id="email" type="email" placeholder="Email" required>
-  <input id="password" type="password" placeholder="Password" required>
+  <div style="position:relative">
+  <input type="password" id="password" placeholder="Password">
+  <span onclick="togglePassword()" 
+        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+               cursor:pointer;font-size:13px;color:#2a5298;">
+    👁 Show
+  </span>
+</div>
+
+
   <button id="loginBtn">Login</button>
   <a href="forgot.html">Forgot Password?</a>
   <p id="msg"></p>
@@ -139,6 +148,19 @@
     });
   });
 </script>
+<script>
+function togglePassword() {
+  const pwd = document.getElementById("password");
+  const toggle = event.target;
 
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    toggle.textContent = "🙈 Hide";
+  } else {
+    pwd.type = "password";
+    toggle.textContent = "👁 Show";
+  }
+}
+</script>
 </body>
 </html>
