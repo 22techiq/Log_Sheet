@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width"><title>Reset Password</title>
+<style>body{font-family:Poppins;background:#1e3c72;height:100vh;display:flex;align-items:center;justify-content:center}.box{background:#fff;padding:30px;border-radius:12px;width:100%;max-width:380px}input,button{width:100%;padding:12px;margin-top:12px}button{background:#2a5298;color:#fff;border:0}</style>
+</head><body>
+<div class="box">
+<h2>New Password</h2>
+<input id="p1" type="password" placeholder="New password">
+<input id="p2" type="password" placeholder="Confirm password">
+<button onclick="reset()">Reset</button>
+<p id="msg"></p>
+</div>
+<script>
+const API="YOUR_APPS_SCRIPT_WEB_APP_URL";
+const token=new URLSearchParams(location.search).get("token");
+function reset(){
+  if(p1.value!==p2.value){msg.innerText="Passwords do not match"; return;}
+  fetch(API,{method:"POST",body:JSON.stringify({action:"reset",token:token,password:p1.value})})
+  .then(r=>r.json())
+  .then(res=>{if(res.success){alert("Password reset successful");location.href="login.html";}else msg.innerText="Invalid or expired link";});
+}
+</script>
+</body></html>
