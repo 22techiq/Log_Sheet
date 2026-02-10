@@ -7,7 +7,7 @@
 <script src="auth.js"></script>
 <script>
 const token=localStorage.getItem("sessionToken");
-if(!token) location.href="login.html";
+if(!token) location.href="index.html";
 fetch(API,{method:"POST",body:JSON.stringify({action:"verify",token:token})})
 .then(r=>r.json())
 .then(res=>{if(!res.valid){alert("Session invalid or blocked");logout();}});
