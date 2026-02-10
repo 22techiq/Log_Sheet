@@ -18,7 +18,7 @@ function login(){
   fetch(API,{method:"POST",body:JSON.stringify({action:"login",email:email.value,password:password.value})})
   .then(r=>r.json())
   .then(res=>{
-    if(res.success){localStorage.setItem("sessionToken",res.token);localStorage.setItem("lastActivity",Date.now());location.href="success.html";}
+    if(res.success){localStorage.setItem("sessionToken",res.token);localStorage.setItem("lastActivity",Date.now());location.href="https://log-sheet-one.vercel.app/success.html";}
     else if(res.reason==="blocked") msg.innerText="Your account has been blocked. Contact support.";
     else msg.innerText="Invalid login";
   });
