@@ -1,5 +1,5 @@
 <script>
-const API="YOUR_APPS_SCRIPT_WEB_APP_URL";
+const API="https://script.google.com/macros/s/AKfycbyJ-9olusliwzyV2YhOBd5kgQXsn3PfUGfYscFhffQwBRNmygq8tJP2jHKbYy6xVapQOQ/exec";
 const INACTIVITY_LIMIT=5*60*1000;
 
 function logout(){localStorage.clear();location.href="login.html";}
