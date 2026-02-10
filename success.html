@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head>
+<title>Dashboard</title>
+<meta name="viewport" content="width=device-width">
+</head><body>
+<h2>Welcome 🎉</h2>
+<button onclick="logout()">Logout</button>
+<script src="auth.js"></script>
+<script>
+const token=localStorage.getItem("sessionToken");
+if(!token) location.href="login.html";
+fetch(API,{method:"POST",body:JSON.stringify({action:"verify",token:token})})
+.then(r=>r.json())
+.then(res=>{if(!res.valid){alert("Session invalid or blocked");logout();}});
+</script>
+</body></html>
