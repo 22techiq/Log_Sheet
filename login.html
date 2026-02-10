@@ -1,0 +1,26 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width">
+<title>Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>body{font-family:Poppins;background:#1e3c72;height:100vh;display:flex;align-items:center;justify-content:center}.box{background:#fff;padding:30px;border-radius:12px;width:100%;max-width:380px}input,button{width:100%;padding:12px;margin-top:12px;border-radius:8px}button{background:#2a5298;color:#fff;border:0;font-size:16px}a{text-align:center;display:block;margin-top:10px}</style>
+</head><body>
+<div class="box">
+<h2>Login</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<a href="forgot.html">Forgot password?</a>
+<p id="msg"></p>
+</div>
+<script src="auth.js"></script>
+<script>
+function login(){
+  fetch(API,{method:"POST",body:JSON.stringify({action:"login",email:email.value,password:password.value})})
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.success){localStorage.setItem("sessionToken",res.token);localStorage.setItem("lastActivity",Date.now());location.href="success.html";}
+    else if(res.reason==="blocked") msg.innerText="Your account has been blocked. Contact support.";
+    else msg.innerText="Invalid login";
+  });
+}
+</script></body></html>
