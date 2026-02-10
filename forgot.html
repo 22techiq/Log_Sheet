@@ -9,7 +9,7 @@
 <p id="msg"></p>
 </div>
 <script>
-const API="https://script.google.com/macros/s/AKfycbyJ-9olusliwzyV2YhOBd5kgQXsn3PfUGfYscFhffQwBRNmygq8tJP2jHKbYy6xVapQOQ/exec";
+const API="https://script.google.com/macros/s/AKfycbw_qfPCVJVNdTgEdbaKP8RnkA_l7COVoEKLvvpaIeWPvwrTDFYH9cF32mGP9Ow3MEAi7g/exec";
 function send(){fetch(API,{method:"POST",body:JSON.stringify({action:"forgot",email:email.value})}).then(()=>{msg.innerText="If the email exists, a reset link has been sent."});}
 </script>
 </body></html>
