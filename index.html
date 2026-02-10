@@ -170,5 +170,56 @@ function togglePassword() {
   }
 }
 </script>
+
+<!--ADD THE BELOW TO APPSCRIPT
+/********** PAGE ACCESS GUARD **********/
+function doGet(e) {
+  const token = e.parameter.token;
+  if (!token) return forbidden();
+
+  const email = CacheService.getUserCache().get(token);
+  if (!email) return forbidden();
+
+  if (getUserStatus(email) !== "Active") {
+    CacheService.getUserCache().remove(token);
+    return forbidden();
+  }
+
+  return HtmlService.createHtmlOutput("AUTHORIZED");
+}
+
+function forbidden() {
+  return HtmlService.createHtmlOutput("FORBIDDEN")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DENY);
+}
+-->
+<!--FRONTEND SCRIPT
+<script>
+(async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return redirect();
+
+  try {
+    const res = await fetch(
+      "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?token=" + token
+    );
+    const text = await res.text();
+
+    if (text !== "AUTHORIZED") return redirect();
+
+    // Backend approved → show page
+    document.body.style.display = "block";
+
+  } catch (e) {
+    redirect();
+  }
+})();
+
+function redirect() {
+  localStorage.removeItem("token");
+  location.href = "login.html";
+}
+</script>
+-->
 </body>
 </html>
