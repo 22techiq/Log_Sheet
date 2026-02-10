@@ -1,0 +1,15 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width"><title>Forgot Password</title>
+<style>body{font-family:Poppins;background:#2a5298;height:100vh;display:flex;justify-content:center;align-items:center}.box{background:#fff;padding:30px;border-radius:12px;width:100%;max-width:380px}input,button{width:100%;padding:12px;margin-top:12px}button{background:#1e3c72;color:#fff;border:0}</style>
+</head><body>
+<div class="box">
+<h2>Reset Password</h2>
+<input id="email" type="email" placeholder="Enter your email">
+<button onclick="send()">Send reset link</button>
+<p id="msg"></p>
+</div>
+<script>
+const API="YOUR_APPS_SCRIPT_WEB_APP_URL";
+function send(){fetch(API,{method:"POST",body:JSON.stringify({action:"forgot",email:email.value})}).then(()=>{msg.innerText="If the email exists, a reset link has been sent."});}
+</script>
+</body></html>
