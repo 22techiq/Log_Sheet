@@ -2,6 +2,34 @@
 <title>Dashboard</title>
 <meta name="viewport" content="width=device-width">
 </head><body>
+<!--Token appscript-->
+<script>
+(async function () {
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (!token) {
+    alert("Access denied.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  const res = await fetch(
+    "YOUR_WEBAPP_URL?action=verify&token=" + token
+  );
+
+  const result = await res.text();
+
+  if (result !== "OK") {
+    alert("Session invalid or expired.");
+    window.location.href = "index.html";
+  }
+
+})();
+</script>
+
+  
 <h2>Welcome 🎉</h2>
 <button onclick="logout()">Logout</button>
 <script src="auth.js"></script>
