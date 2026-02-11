@@ -4,30 +4,38 @@
 </head><body>
 <!--Token appscript-->
 <script>
+const WEBAPP = "https://script.google.com/macros/s/AKfycbz-f-c8uD99nN7fSfcqz0a9guqmudtAbGFbbiNEcYvBjqMlysTrl63a5INsvrBGjj9y1A/exec";
+
 (async function () {
 
   const params = new URLSearchParams(window.location.search);
   const token = params.get("token");
 
   if (!token) {
-    alert("Access denied.");
     window.location.href = "index.html";
     return;
   }
 
-  const res = await fetch(
-    "https://script.google.com/macros/s/AKfycbxqmTBTJerceE10e9Ix6DfFnv2W_-AzXbruUmjWQdv3JZUQZKveRM93hQHRjALO7_g/exec?action=verify&token=" + token
-  );
+  try {
 
-  const result = await res.text();
+    const res = await fetch(
+      WEBAPP + "?action=verify&token=" + token
+    );
 
-  if (result !== "OK") {
-    alert("Session invalid or expired.");
+    const result = await res.text();
+
+    if (result !== "OK") {
+      window.location.href = "index.html";
+      return;
+    }
+
+  } catch (err) {
     window.location.href = "index.html";
   }
 
 })();
 </script>
+
 
   
 <h2>Welcome 🎉</h2>
@@ -42,28 +50,6 @@ fetch(API,{method:"POST",body:JSON.stringify({action:"verify",token:token})})
 </script>
 </body>
 </html>
-<!--Tokenize the page on landing page(This Page B)-->
-<script>
-(async () => {
-  const token = new URLSearchParams(window.location.search).get("token");
 
-  if (!token) {
-    window.location.replace("index.html");
-    return;
-  }
-
-  const res = await fetch(
-    "https://script.google.com/macros/s/AKfycbzG36UvSnkldPrLqPUCsu72XXkou0hd2cDqcBP_2TUF6EiFR18YODAA97ber48gdTDB/exec?action=verify&token=" + token
-  );
-
-  const result = await res.text();
-
-  if (result === "OK") {
-    document.getElementById("content").style.display = "block";
-  } else {
-    window.location.replace("index.html");
-  }
-})();
-</script>
 
 </body></html>
