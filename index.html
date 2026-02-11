@@ -193,7 +193,7 @@ function forbidden() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DENY);
 }
 -->
-<!--FRONTEND SCRIPT
+
 <script>
 (async () => {
   const token = localStorage.getItem("token");
@@ -201,7 +201,7 @@ function forbidden() {
 
   try {
     const res = await fetch(
-      "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec?token=" + token
+      "https://script.google.com/macros/s/AKfycbyRxLqaRM0CpmthjnpB1-pqeHFGgfAf_mAB5lHXDKwsQbetclFmHCOQwBapmYNfKOBLWQ/exec?token=" + token
     );
     const text = await res.text();
 
@@ -217,9 +217,9 @@ function forbidden() {
 
 function redirect() {
   localStorage.removeItem("token");
-  location.href = "login.html";
+  location.href = "success.html";
 }
 </script>
--->
+
 </body>
 </html>
