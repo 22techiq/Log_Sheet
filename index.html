@@ -173,16 +173,17 @@ function togglePassword() {
 
   <!--ENABLES TOKENIZED ACCESS VIA BACKEND APPSCRIPT:FOR ENHANCED SECURITY(THIS IS PAGE A:index.html)-->
 <script>
-async function go() {
-  const res = await fetch(
-    "https://script.google.com/macros/s/AKfycbzG36UvSnkldPrLqPUCsu72XXkou0hd2cDqcBP_2TUF6EiFR18YODAA97ber48gdTDB/exec?action=issue"
-  );
-  const token = await res.text();
+async function goToSuccess() {
 
-  window.location.href =
-    "https://log-sheet-one.vercel.app/success.html?token=" + token;
+  // Request token from backend
+  const token = await fetch("YOUR_WEBAPP_URL?action=issue")
+    .then(res => res.text());
+
+  // Redirect to Page B with token
+  window.location.href = "success.html?token=" + token;
 }
 </script>
+
 
 <script>
 /* =================================
