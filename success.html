@@ -12,34 +12,6 @@ fetch(API,{method:"POST",body:JSON.stringify({action:"verify",token:token})})
 .then(r=>r.json())
 .then(res=>{if(!res.valid){alert("Session invalid or blocked");logout();}});
 </script>
-
-  <script>
-(async () => {
-  const token = localStorage.getItem("token");
-  if (!token) return redirect();
-
-  try {
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbwJ6vHLrMcRLw3SqZGynIY07Zjw7KPbNbk1SyJUAtEUmE2RCfQl51tFeqXNbOSjnIEA5Q/exec?token=" + token
-    );
-    const text = await res.text();
-
-    if (text !== "AUTHORIZED") return redirect();
-
-    // Backend approved → show page
-    document.body.style.display = "block";
-
-  } catch (e) {
-    redirect();
-  }
-})();
-
-function redirect() {
-  localStorage.removeItem("token");
-  location.href = "success.html";
-}
-</script>
-
 </body>
 </html>
 
