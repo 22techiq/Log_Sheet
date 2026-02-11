@@ -80,7 +80,8 @@
   </span>
 </div>
 
-<button id="loginBtn">Login</button>
+<button id="loginBtn"  onclick="login()">Login</button>
+
 <hr>
 <hr>
 <a href="forgot.html" style="float: centre; margin-right: 10px;">Forgot Password?</a>
@@ -172,15 +173,25 @@ function togglePassword() {
 </script>
 
   <!--ENABLES TOKENIZED ACCESS VIA BACKEND APPSCRIPT:FOR ENHANCED SECURITY(THIS IS PAGE A:index.html)-->
-<script>
-async function goToSuccess() {
 
-  // Request token from backend
-  const token = await fetch("https://script.google.com/macros/s/AKfycbxqmTBTJerceE10e9Ix6DfFnv2W_-AzXbruUmjWQdv3JZUQZKveRM93hQHRjALO7_g/exec?action=issue")
+<script>
+const WEBAPP = "https://script.google.com/macros/s/AKfycbz-f-c8uD99nN7fSfcqz0a9guqmudtAbGFbbiNEcYvBjqMlysTrl63a5INsvrBGjj9y1A/exec";
+
+async function login() {
+
+  // Here you validate user credentials first if needed
+
+  // Request token
+  const token = await fetch(WEBAPP + "?action=issue")
     .then(res => res.text());
 
-  // Redirect to Page B with token
-  window.location.href = "https://log-sheet-one.vercel.app/success.html?token=" + token;
+  if (!token) {
+    alert("Could not start session.");
+    return;
+  }
+
+  // Redirect
+  window.location.href = "success.html?token=" + token;
 }
 </script>
 
