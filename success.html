@@ -4,7 +4,7 @@
 </head><body>
 <!--Token appscript-->
 <script>
-const WEBAPP = "https://script.google.com/macros/s/AKfycbz-f-c8uD99nN7fSfcqz0a9guqmudtAbGFbbiNEcYvBjqMlysTrl63a5INsvrBGjj9y1A/exec";
+const WEBAPP = "https://script.google.com/macros/s/AKfycbwSAofz36PuOswlrMH8ldJz1Q4HJzqumJooDrYpdqV9-Lb-w_XDZcbGxFx686GjSJNm5A/exec";
 
 (async function () {
 
@@ -12,7 +12,7 @@ const WEBAPP = "https://script.google.com/macros/s/AKfycbz-f-c8uD99nN7fSfcqz0a9g
   const token = params.get("token");
 
   if (!token) {
-    window.location.href = "index.html";
+    window.location.href = "https://log-sheet-one.vercel.app/index.html";
     return;
   }
 
@@ -25,12 +25,12 @@ const WEBAPP = "https://script.google.com/macros/s/AKfycbz-f-c8uD99nN7fSfcqz0a9g
     const result = await res.text();
 
     if (result !== "OK") {
-      window.location.href = "index.html";
+      window.location.href = "https://log-sheet-one.vercel.app/index.html";
       return;
     }
 
   } catch (err) {
-    window.location.href = "index.html";
+    window.location.href = "https://log-sheet-one.vercel.app/index.html";
   }
 
 })();
