@@ -14,5 +14,28 @@ fetch(API,{method:"POST",body:JSON.stringify({action:"verify",token:token})})
 </script>
 </body>
 </html>
+<!--Tokenize the page on landing page(This Page B)-->
+<script>
+(async () => {
+  const token = new URLSearchParams(window.location.search).get("token");
+
+  if (!token) {
+    window.location.replace("index.html");
+    return;
+  }
+
+  const res = await fetch(
+    "https://script.google.com/macros/s/AKfycbzJxWnlrfW4K8mdOiSBaiuDgHepTukGaCRwYWNV1ENWIAa-iizBAhQUr8ZC8XkaMYy8/exec?action=verify&token=" + token
+  );
+
+  const result = await res.text();
+
+  if (result === "OK") {
+    document.getElementById("content").style.display = "block";
+  } else {
+    window.location.replace("index.html");
+  }
+})();
+</script>
 
 </body></html>
