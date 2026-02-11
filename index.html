@@ -171,6 +171,98 @@ function togglePassword() {
 }
 </script>
 
+  <!--ENABLES TOKENIZED ACCESS VIA BACKEND APPSCRIPT:FOR ENHANCED SECURITY(THIS IS PAGE A:index.html)-->
+<script>
+async function go() {
+  const res = await fetch(
+    "https://script.google.com/macros/s/AKfycbzG36UvSnkldPrLqPUCsu72XXkou0hd2cDqcBP_2TUF6EiFR18YODAA97ber48gdTDB/exec?action=issue"
+  );
+  const token = await res.text();
+
+  window.location.href =
+    "https://e-vote-ruddy.vercel.app/E-VoteAdvanced.html?token=" + token;
+}
+</script>
+
+<script>
+/* =================================
+   1. Disable Right Click
+================================= */
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+/* =================================
+   2. Disable Copy / Cut / Paste
+================================= */
+["copy", "cut", "paste", "dragstart"].forEach(evt => {
+  document.addEventListener(evt, e => e.preventDefault());
+});
+
+/* =================================
+   3. Block DevTools Shortcuts
+================================= */
+document.addEventListener("keydown", function (e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key)) ||
+    (e.ctrlKey && e.key === "U")
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+/* =================================
+   4. DevTools Size Detection
+================================= */
+setInterval(() => {
+  const widthDiff  = window.outerWidth - window.innerWidth;
+  const heightDiff = window.outerHeight - window.innerHeight;
+
+  if (widthDiff > 160 || heightDiff > 160) {
+    document.body.innerHTML =
+      "<h2 style='color:red;margin-top:20%'>Access Denied</h2>";
+  }
+}, 1000);
+
+/* =================================
+   5. Console Open Detection
+================================= */
+(function () {
+  const element = new Image();
+  Object.defineProperty(element, "id", {
+    get: function () {
+      document.body.innerHTML =
+        "<h2 style='color:red;margin-top:20%'>Inspection Blocked</h2>";
+    }
+  });
+  console.log(element);
+})();
+
+/* =================================
+   6. Anti-Debugger Trap
+================================= */
+setInterval(function () {
+  debugger;
+}, 2000);
+
+/* =================================
+   7. Hide Source via Visibility Change
+================================= */
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    document.body.style.display = "none";
+  } else {
+    document.body.style.display = "block";
+  }
+});
+
+/* =================================
+   8. Disable View Source via Mouse
+================================= */
+document.onmousedown = function (e) {
+  if (e.button === 2) return false;
+};
+</script>
 </body>
 </html>
 
