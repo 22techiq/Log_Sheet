@@ -176,7 +176,7 @@ function togglePassword() {
 async function goToSuccess() {
 
   // Request token from backend
-  const token = await fetch("YOUR_WEBAPP_URL?action=issue")
+  const token = await fetch("https://script.google.com/macros/s/AKfycbxqmTBTJerceE10e9Ix6DfFnv2W_-AzXbruUmjWQdv3JZUQZKveRM93hQHRjALO7_g/exec?action=issue")
     .then(res => res.text());
 
   // Redirect to Page B with token
