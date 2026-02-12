@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+  <!--CDN for the Working script-->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
 <!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -275,6 +277,25 @@ document.onmousedown = function (e) {
   if (e.button === 2) return false;
 };
 </script>
+
+<!-- Form sanitization NOT WORKING-->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", function () {
+      const fields = form.querySelectorAll("input, textarea");
+
+      fields.forEach(field => {
+        field.value = DOMPurify.sanitize(field.value, {
+          ALLOWED_TAGS: [],
+          ALLOWED_ATTR: []
+        });
+      });
+    });
+  });
+</script>
+<!--End of DOMPurify -->
 </body>
 </html>
 
