@@ -68,31 +68,37 @@
 </style>
 <!--DOMPurify-->
 <script>
-document.getElementById("registerBtn").addEventListener("click", function(e) {
-  e.preventDefault();
+document.getElementById("registerBtn").addEventListener("click", function () {
 
-  const name = DOMPurify.sanitize(
-    document.getElementById("name").value.trim(),
-    { ALLOWED_TAGS: [] }
-  );
+    // Get raw values
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
 
-  const email = DOMPurify.sanitize(
-    document.getElementById("email").value.trim(),
-    { ALLOWED_TAGS: [] }
-  );
+    // Sanitize inputs
+    let cleanName = DOMPurify.sanitize(name);
+    let cleanEmail = DOMPurify.sanitize(email);
+    let cleanPassword = DOMPurify.sanitize(password);
 
-  const password = DOMPurify.sanitize(
-    document.getElementById("password").value.trim(),
-    { ALLOWED_TAGS: [] }
-  );
+    // Basic validation
+    if (!cleanName || !cleanEmail || !cleanPassword) {
+        alert("All fields are required.");
+        return;
+    }
 
-  console.log("Sanitized Data:");
-  console.log(name, email, password);
+    // Example of safely inserting into DOM
+    let output = document.createElement("div");
+    output.innerHTML = `
+        <p><strong>Name:</strong> ${cleanName}</p>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
+    `;
 
-  alert("Inputs sanitized successfully ✅");
+    document.body.appendChild(output);
 
+    alert("Registration successful (Demo Only)");
 });
 </script>
+
 
 
 </head>
