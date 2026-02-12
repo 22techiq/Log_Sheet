@@ -67,6 +67,28 @@
     font-weight: 500;
   }
 </style>
+
+<!--DOMPurify-->
+<script>
+function sanitizeLoginInputs() {
+  const emailField = document.getElementById("email");
+  const passwordField = document.getElementById("password");
+
+  // Get raw input values
+  let email = emailField.value.trim();
+  let password = passwordField.value.trim();
+
+  // Sanitize (remove ALL HTML)
+  const cleanEmail = DOMPurify.sanitize(email, { ALLOWED_TAGS: [] });
+  const cleanPassword = DOMPurify.sanitize(password, { ALLOWED_TAGS: [] });
+
+  return {
+    email: cleanEmail,
+    password: cleanPassword
+  };
+}
+</script>
+
 </head>
 <body>
 
