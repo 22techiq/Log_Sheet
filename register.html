@@ -66,40 +66,6 @@
     font-weight: 500;
   }
 </style>
-<!--DOMPurify-->
-<script>
-document.getElementById("registerBtn").addEventListener("click", function () {
-
-    // Get raw values
-    let name = document.getElementById("name").value;
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-
-    // Sanitize inputs
-    let cleanName = DOMPurify.sanitize(name);
-    let cleanEmail = DOMPurify.sanitize(email);
-    let cleanPassword = DOMPurify.sanitize(password);
-
-    // Basic validation
-    if (!cleanName || !cleanEmail || !cleanPassword) {
-        alert("All fields are required.");
-        return;
-    }
-
-    // Example of safely inserting into DOM
-    let output = document.createElement("div");
-    output.innerHTML = `
-        <p><strong>Name:</strong> ${cleanName}</p>
-        <p><strong>Email:</strong> ${cleanEmail}</p>
-    `;
-
-    document.body.appendChild(output);
-
-    alert("Registration successful (Demo Only)");
-});
-</script>
-
-
 
 </head>
 <body>
@@ -169,6 +135,38 @@ document.getElementById("registerBtn").addEventListener("click", function () {
       msg.innerText = "Error connecting to server.";
     });
   });
+</script>
+<!--DOMPurify-->
+<script>
+document.getElementById("registerBtn").addEventListener("click", function () {
+
+    // Get raw values
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    // Sanitize inputs
+    let cleanName = DOMPurify.sanitize(name);
+    let cleanEmail = DOMPurify.sanitize(email);
+    let cleanPassword = DOMPurify.sanitize(password);
+
+    // Basic validation
+    if (!cleanName || !cleanEmail || !cleanPassword) {
+        alert("All fields are required.");
+        return;
+    }
+
+    // Example of safely inserting into DOM
+    let output = document.createElement("div");
+    output.innerHTML = `
+        <p><strong>Name:</strong> ${cleanName}</p>
+        <p><strong>Email:</strong> ${cleanEmail}</p>
+    `;
+
+    document.body.appendChild(output);
+
+    alert("Registration successful (Demo Only)");
+});
 </script>
 
 </body>
