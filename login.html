@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Poppins',sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:
+    linear-gradient(rgba(5,10,25,0.8),rgba(5,10,25,0.8)),
+    url('https://images.unsplash.com/photo-1519389950473-47ba0277781c');
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+}
+
+/* Glow blobs */
+body::before,body::after{
+  content:'';
+  position:absolute;
+  width:400px;
+  height:400px;
+  border-radius:50%;
+  filter:blur(120px);
+  z-index:0;
+}
+body::before{background:#00f7ff;top:-100px;left:-100px;}
+body::after{background:#ff00c8;bottom:-100px;right:-10scroll0px;}
+
+/* Glass Card */
+.register-box{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:420px;
+  padding:35px;
+  border-radius:25px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(25px);
+  border:1px solid rgba(255,255,255,0.25);
+  box-shadow:0 25px 60px rgba(0,0,0,0.5);
+  color:#fff;
+}
+
+.register-box h2{
+  text-align:center;
+  margin-bottom:25px;
+  font-weight:600;
+}
+
+/* Inputs */
+.input-group{
+  position:relative;
+  margin-bottom:18px;
+}
+
+.input-group input{
+  width:100%;
+  padding:14px 42px 14px 15px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  font-size:14px;
+  outline:none;
+  transition:0.3s;
+}
+
+.input-group input::placeholder{color:#ddd;}
+
+.input-group input:focus{
+  border-color:#00f7ff;
+  box-shadow:0 0 10px rgba(0,247,255,0.6);
+}
+
+.input-group i{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  cursor:pointer;
+  color:#ccc;
+}
+
+.valid{border-color:#00ff9d !important;}
+.invalid{border-color:#ff4d4d !important;}
+
+/* Strength meter */
+.strength{
+  height:6px;
+  border-radius:6px;
+  background:#444;
+  margin-top:6px;
+  overflow:hidden;
+}
+
+.strength span{
+  display:block;
+  height:100%;
+  width:0%;
+  transition:0.3s;
+}
+
+/* Button */
+.register-box button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#00f7ff,#ff00c8);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+  transition:0.3s;
+}
+
+.register-box button:hover{transform:scale(1.03);}
+.register-box button:disabled{opacity:0.5;cursor:not-allowed;}
+
+.register-box a{
+  display:block;
+  text-align:center;
+  margin-top:18px;
+  color:#ddd;
+  text-decoration:none;
+}
+
+.register-box a:hover{color:#fff;}
+
+#msg{text-align:center;margin-top:12px}
+
+/* Responsive */
+@media(max-width:480px){
+  .register-box{padding:25px 20px;}
+  body::before,body::after{
+    width:250px;
+    height:250px;
+    filter:blur(90px);
+  }
+}
+
+
+
+</style>
+</head>
+<body>
+
+<div class="register-box">
+  <h2>Create Account</h2>
+
+  <div class="input-group">
+    <input id="name" type="text" placeholder="Full Name" required>
+  </div>
+
+  <div class="input-group">
+    <input id="email" type="email" placeholder="Email" required>
+  </div>
+
+  <div class="input-group">
+    <input id="password" type="password" placeholder="Password" required>
+    <i class="fa-solid fa-eye toggle"></i>
+    <div class="strength"><span id="strengthBar"></span></div>
+  </div>
+
+  <div class="input-group">
+    <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
+    <i class="fa-solid fa-eye toggle"></i>
+  </div>
+
+  <button id="registerBtn" disabled>Register</button>
+  <a href="login.html">Already have an account? Login</a>
+  <p id="msg"></p>
+</div>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbwJ6vHLrMcRLw3SqZGynIY07Zjw7KPbNbk1SyJUAtEUmE2RCfQl51tFeqXNbOSjnIEA5Q/exec";
+const registerBtn=document.getElementById("registerBtn");
+const msg=document.getElementById("msg");
+const password=document.getElementById("password");
+const confirmPassword=document.getElementById("confirmPassword");
+const strengthBar=document.getElementById("strengthBar");
+
+/* Toggle eye */
+document.querySelectorAll(".toggle").forEach(icon=>{
+  icon.addEventListener("click",()=>{
+    const input=icon.previousElementSibling;
+    input.type=input.type==="password"?"text":"password";
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  });
+});
+
+/* Password strength */
+password.addEventListener("input",()=>{
+  let val=password.value;
+  let strength=0;
+  if(val.length>7)strength++;
+  if(/[A-Z]/.test(val))strength++;
+  if(/[0-9]/.test(val))strength++;
+  if(/[^A-Za-z0-9]/.test(val))strength++;
+
+  let width=["0%","25%","50%","75%","100%"][strength];
+  let color=["red","orange","#ffc107","#00f7ff","#00ff9d"][strength];
+  strengthBar.style.width=width;
+  strengthBar.style.background=color;
+
+  validate();
+});
+
+/* Confirm match */
+confirmPassword.addEventListener("input",validate);
+
+function validate(){
+  if(password.value && confirmPassword.value){
+    if(password.value===confirmPassword.value){
+      confirmPassword.classList.add("valid");
+      confirmPassword.classList.remove("invalid");
+      registerBtn.disabled=false;
+    }else{
+      confirmPassword.classList.add("invalid");
+      confirmPassword.classList.remove("valid");
+      registerBtn.disabled=true;
+    }
+  }else{
+    registerBtn.disabled=true;
+  }
+}
+
+/* Registration (UNCHANGED FUNCTIONALITY) */
+registerBtn.addEventListener("click",function(){
+  const name=document.getElementById("name").value.trim();
+  const email=document.getElementById("email").value.trim();
+  const pass=password.value.trim();
+
+  if(!name||!email||!pass){
+    msg.style.color="red";
+    msg.innerText="Please fill in all fields.";
+    return;
+  }
+
+  msg.style.color="#00f7ff";
+  msg.innerText="Registering...";
+  registerBtn.disabled=true;
+
+  fetch(API,{
+    method:"POST",
+    body:JSON.stringify({
+      action:"register",
+      name:name,
+      email:email,
+      password:pass
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    registerBtn.disabled=false;
+
+    if(data.success){
+      msg.style.color="#00ff9d";
+      msg.innerText="Registration successful! Redirecting...";
+      setTimeout(()=>window.location.href="index.html",1500);
+    }else if(data.reason==="exists"){
+      msg.style.color="red";
+      msg.innerText="Email already registered.";
+    }else{
+      msg.style.color="red";
+      msg.innerText="Registration failed.";
+    }
+  })
+  .catch(()=>{
+    registerBtn.disabled=false;
+    msg.style.color="red";
+    msg.innerText="Server error.";
+  });
+});
+</script>
+
+</body>
+</html>
