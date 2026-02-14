@@ -1,0 +1,309 @@
+<!--NOT WORKING AS INTENDED OFLATE-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+  <!--CDN for the Working script-->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #1e3c72;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  .login-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  .login-box h2 {
+    text-align: center;
+    color: #1e3c72;
+    margin-bottom: 20px;
+  }
+  .login-box input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  .login-box button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border-radius: 8px;
+    border: none;
+    background: #2a5298;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .login-box button:hover {
+    background: #1e3c72;
+  }
+  .login-box a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #2a5298;
+  }
+  #msg {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 500;
+  }
+</style>
+
+<!--DOMPurify-->
+<script>
+function sanitizeLoginInputs() {
+  const emailField = document.getElementById("email");
+  const passwordField = document.getElementById("password");
+
+  // Get raw input values
+  let email = emailField.value.trim();
+  let password = passwordField.value.trim();
+
+  // Sanitize (remove ALL HTML)
+  const cleanEmail = DOMPurify.sanitize(email, { ALLOWED_TAGS: [] });
+  const cleanPassword = DOMPurify.sanitize(password, { ALLOWED_TAGS: [] });
+
+  return {
+    email: cleanEmail,
+    password: cleanPassword
+  };
+}
+</script>
+
+</head>
+<body>
+
+<div class="login-box">
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email" required>
+  <div style="position:relative">
+  <input type="password" id="password" placeholder="Password">
+  <span onclick="togglePassword()" 
+        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);
+               cursor:pointer;font-size:13px;color:#2a5298;">
+    👁 Show
+  </span>
+</div>
+
+<button id="loginBtn">Login</button>
+
+<hr>
+<hr>
+<a href="forgot.html" style="float: centre; margin-right: 10px;">Forgot Password?</a>
+<a href="register.html" style="float: centre;">Register Account ?</a>
+<hr>
+<hr>
+
+<br>
+
+  <p id="msg"></p>
+
+</div>
+
+<script>
+  const API = "https://script.google.com/macros/s/AKfycbwJ6vHLrMcRLw3SqZGynIY07Zjw7KPbNbk1SyJUAtEUmE2RCfQl51tFeqXNbOSjnIEA5Q/exec"; // Replace with your Web App URL
+  const loginBtn = document.getElementById("loginBtn");
+  const msg = document.getElementById("msg");
+
+  loginBtn.addEventListener("click", function() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if(!email || !password){
+      msg.style.color = "red";
+      msg.innerText = "Please enter both email and password.";
+      return;
+    }
+
+    // Show logging in message and disable button
+    msg.style.color = "#1e3c72";
+    msg.innerText = "Logging in...";
+    loginBtn.disabled = true;
+    loginBtn.style.opacity = "0.6";
+
+    fetch(API, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "login",
+        email: email,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(res => {
+      // Re-enable button
+      loginBtn.disabled = false;
+      loginBtn.style.opacity = "1";
+
+      if(res.success){
+        localStorage.setItem("sessionToken", res.token);
+        localStorage.setItem("lastActivity", Date.now());
+        msg.style.color = "green";
+        msg.innerText = "Login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "https://log-sheet-one.vercel.app/success.html"; // Protected page
+        }, 1000);
+      }
+      else if(res.reason === "blocked"){
+        msg.style.color = "red";
+        msg.innerText = "Your account has been blocked. Contact support.";
+      }
+      else{
+        msg.style.color = "red";
+        msg.innerText = "Invalid email or password.";
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      loginBtn.disabled = false;
+      loginBtn.style.opacity = "1";
+      msg.style.color = "red";
+      msg.innerText = "Error connecting to server.";
+    });
+  });
+</script>
+<script>
+function togglePassword() {
+  const pwd = document.getElementById("password");
+  const toggle = event.target;
+
+  if (pwd.type === "password") {
+    pwd.type = "text";
+    toggle.textContent = "🙈 Hide";
+  } else {
+    pwd.type = "password";
+    toggle.textContent = "👁 Show";
+  }
+}
+</script>
+
+  <!--Log Sheet[Working]:ENABLES TOKENIZED ACCESS VIA BACKEND APPSCRIPT:FOR ENHANCED SECURITY(THIS IS PAGE A:index.html)-->
+
+<script>
+const WEBAPP = "https://script.google.com/macros/s/AKfycbwSAofz36PuOswlrMH8ldJz1Q4HJzqumJooDrYpdqV9-Lb-w_XDZcbGxFx686GjSJNm5A/exec";
+
+async function login() {
+
+  // Here you validate user credentials first if needed
+
+  // Request token
+  const token = await fetch(WEBAPP + "?action=issue")
+    .then(res => res.text());
+
+  if (!token) {
+    alert("Could not start session.");
+    return;
+  }
+
+  // Redirect
+  window.location.href = "https://log-sheet-one.vercel.app/success.html?token=" + token;
+}
+</script>
+
+
+<script>
+/* =================================
+   1. Disable Right Click
+================================= */
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+/* =================================
+   2. Disable Copy / Cut / Paste
+================================= */
+["copy", "cut", "paste", "dragstart"].forEach(evt => {
+  document.addEventListener(evt, e => e.preventDefault());
+});
+
+/* =================================
+   3. Block DevTools Shortcuts
+================================= */
+document.addEventListener("keydown", function (e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I","J","C"].includes(e.key)) ||
+    (e.ctrlKey && e.key === "U")
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+/* =================================
+   4. DevTools Size Detection
+================================= */
+setInterval(() => {
+  const widthDiff  = window.outerWidth - window.innerWidth;
+  const heightDiff = window.outerHeight - window.innerHeight;
+
+  if (widthDiff > 160 || heightDiff > 160) {
+    document.body.innerHTML =
+      "<h2 style='color:red;margin-top:20%'>Access Denied</h2>";
+  }
+}, 1000);
+
+/* =================================
+   5. Console Open Detection
+================================= */
+(function () {
+  const element = new Image();
+  Object.defineProperty(element, "id", {
+    get: function () {
+      document.body.innerHTML =
+        "<h2 style='color:red;margin-top:20%'>Inspection Blocked</h2>";
+    }
+  });
+  console.log(element);
+})();
+
+/* =================================
+   6. Anti-Debugger Trap
+================================= */
+setInterval(function () {
+  debugger;
+}, 2000);
+
+/* =================================
+   7. Hide Source via Visibility Change
+================================= */
+document.addEventListener("visibilitychange", function () {
+  if (document.hidden) {
+    document.body.style.display = "none";
+  } else {
+    document.body.style.display = "block";
+  }
+});
+
+/* =================================
+   8. Disable View Source via Mouse
+================================= */
+document.onmousedown = function (e) {
+  if (e.button === 2) return false;
+};
+</script>
+
+<!-- Form sanitization NOT WORKING-->
+
+<!--End of DOMPurify -->
+</body>
+</html>
+
